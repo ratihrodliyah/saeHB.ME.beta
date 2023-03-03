@@ -1,0 +1,19 @@
+#' @title Sample Data for Small Area Estimation with Measurement Error using Hierarchical Bayesian Method under Beta Distribution with Non-sampled Area
+#' @description This data to simulate Small Area Estimation using Hierarchical Bayesian Method with Measurement Error under Beta Distribution with non-sampled areas
+#'
+#' This data contains NA values that indicates no sampled at one or more small areas. It uses the \link[saeHB.ME.beta]{dataHBMEbeta} with the direct estimates and the related variances in 5 small areas are missing.
+#'
+#' @usage data(dataHBMEbetaNS)
+#' @format A data frame with 30 rows and 8 variables:
+#' \describe{
+#'   \item{\code{Y}}{direct estimation of Y.}
+#'   \item{\code{x1}}{auxiliary variable of x1.}
+#'   \item{\code{x2}}{auxiliary variable of x2.}
+#'   \item{\code{x3}}{auxiliary variable of x3.}
+#'   \item{\code{x4}}{auxiliary variable of x4.}
+#'   \item{\code{vardir}}{sampling variances of Y.}
+#'   \item{\code{v.x1}}{mean squared error of x1.}
+#'   \item{\code{v.x2}}{mean squared error of x2.}
+#'}
+#' @name dataHBMEbetaNS
+NULL

@@ -1,0 +1,33 @@
+Package: saeHB.ME.beta
+Title: Small Area Estimation with Measurement Error using Hierarchical
+        Bayesian Method under Beta Distribution
+Version: 0.1.0
+Authors@R: 
+    c(person("Azka Ubaidillah", role = "aut", email = "azka@stis.ac.id"),
+      person("Ratih Rodliyah", role = c("aut","cre"), email = "ratihrodliyah2@gmail.com"))
+Description: Implementation of small area estimation using Hierarchical Bayesian (HB) Method when auxiliary variable measured with error. The 'rjags' package is employed to obtain parameter estimates. For the references, see Rao and Molina (2015) <doi:10.1002/9781118735855>, Ybarra and Lohr (2008) <doi:10.1093/biomet/asn048>, and Ntzoufras (2009, ISBN-10: 1118210352).
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+NeedsCompilation: no
+Imports: 
+    coda,
+    graphics,
+    grDevices,
+    rjags,
+    stats,
+    stringr
+Suggests: 
+    knitr,
+    R.rsp,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Depends: 
+    R (>= 2.10)
+LazyData: true
+Author: Azka Ubaidillah [aut],
+        Ratih Rodliyah [aut, cre]
+Maintainer: Ratih Rodliyah <ratihrodliyah2@gmail.com>
+VignetteBuilder: R.rsp, knitr
