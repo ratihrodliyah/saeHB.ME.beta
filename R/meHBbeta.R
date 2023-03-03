@@ -13,7 +13,7 @@
 #'
 #' @return This function returns a list with the following objects:
 #'    \item{Est}{A vector with the values of Small Area mean Estimates using Hierarchical bayesian method }
-#'    \item{refVar}{Estimated random effect variances}
+#'    \item{refvar}{Estimated random effect variances}
 #'    \item{coefficient}{A data frame with the estimated model coefficient}
 #'    \item{plot}{Trace, Dencity, Autocorrelation Function Plot of MCMC samples}
 #'
@@ -33,24 +33,20 @@
 #'
 #' ## Auxiliary variables only contains variable with error in aux variable
 #' example <- meHBbeta(Y~x1+x2, var.x = c("v.x1","v.x2"),
-#'                    iter.update = 3, iter.mcmc = 5000,
+#'                    iter.update = 3, iter.mcmc = 10000,
 #'                    thin = 3, burn.in = 1000, data = dataHBMEbeta)
-#' ## Load Result
-#' example
 #'
 #' ## Auxiliary variables contains variable with error and without error in aux variable
 #' example_mix <- meHBbeta(Y~x1+x2+x3, var.x = c("v.x1","v.x2"),
-#'                         iter.update = 3, iter.mcmc = 5000,
+#'                         iter.update = 3, iter.mcmc = 10000,
 #'                         thin = 3, burn.in = 1000, data = dataHBMEbeta)
-#' ## Load Result
-#' example_mix
 #'
 #' ## you can use dataHBMEbetaNS for using dataset with non-sampled area
 #'
 #'
 meHBbeta <- function(formula, var.x, coef, var.coef,
                      iter.update=3, iter.mcmc=10000, thin = 3, tau.u = 1, burn.in =2000, data){
-  result <- list(Est = NA, refVar = NA, coefficient = NA,
+  result <- list(Est = NA, refvar = NA, coefficient = NA,
                  plot=NA)
 
 
@@ -485,7 +481,7 @@ meHBbeta <- function(formula, var.x, coef, var.coef,
   }
 
   result$Est = cbind(Estimation, q_Estimation)
-  result$refVar      = a.var
+  result$refvar      = a.var
   result$coefficient = beta
   result$plot       = list(graphics.off(),
                            par(mar=c(2,2,2,2)),
