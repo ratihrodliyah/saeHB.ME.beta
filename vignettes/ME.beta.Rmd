@@ -2,7 +2,7 @@
 title: "An Aplication to SAE HB ME under Beta Distribution On Sample Data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{my-vignette}
+  %\VignetteIndexEntry{SAE HB with Measurement Error under Beta Distribution}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,114 +14,162 @@ knitr::opts_chunk$set(
 )
 ```
 
-##STEP 1 : Load Package and Load Data Set
+## case 1: Auxiliary variables only contains variable with error in aux variable
+
+## STEP 1 : Load Package and Load Data Set
 ```{r setup}
 library(saeHB.ME.beta)
 data("dataHBMEbeta")
-data("dataHBMEbetaNS")
 ```
 
-#case 1: Auxiliary variables only contains variable with error in aux variable
-##STEP 2 : Fitting Model
+## STEP 2 : Fitting HB Model
+
 ```{r}
 example <- meHBbeta(Y~x1+x2, var.x = c("v.x1","v.x2"),
                    iter.update = 3, iter.mcmc = 10000,
                    thin = 3, burn.in = 1000, data = dataHBMEbeta)
 ```
-##STEP 3 : Ekstract Mean Estimation
-###Small Area Mean Estimation
+
+## STEP 3 : Ekstract Mean Estimation
+
+### Small Area Mean Estimation
+
 ```{r}
 example$Est
 ```
-###Coefficient Estimation
+
+### Coefficient Estimation
+
 ```{r}
 example$coefficient
 ```
-###Random Effect Variance Estimation
+
+### Random Effect Variance Estimation
+
 ```{r}
 example$refvar
 ```
-###Extract MSE
+
+### Extract MSE
+
 ```{r}
 MSE_HBMEbeta=example$Est$sd^2
 ```
-###Extract RSE
+
+### Extract RSE
+
 ```{r}
 RSE_HBMEbeta=sqrt(MSE_HBMEbeta)/example$Est$mean*100
 ```
-#You can compare with Direct Estimation
-##Extract Direct  Estimation
+
+## You can compare with Direct Estimation
+
+### Extract Direct  Estimation
+
 ```{r}
 Y_direct=dataHBMEbeta[,1]
 MSE_direct=dataHBMEbeta[,6]
 RSE_direct=sqrt(MSE_direct)/Y_direct*100
 ```
-##Comparing Y
+
+### Comparing Y
+
 ```{r}
 Y_HBMEbeta=example$Est$mean
 Y=as.data.frame(cbind(Y_direct,Y_HBMEbeta))
 summary(Y)
-boxplot(Y,col=topo.colors(3))
+boxplot(Y,col=topo.colors(2))
 ```
-##Comparing Mean Squared  Error (MSE) 
+
+### Comparing Mean Squared  Error (MSE)
+
 ```{r}
 MSE=as.data.frame(cbind(MSE_direct,MSE_HBMEbeta))
 summary(MSE)
 ```
-##Comparing Relative Standard  Error (RSE) 
+
+### Comparing Relative Standard  Error (RSE) 
+
 ```{r}
 RSE=as.data.frame(cbind(RSE_direct,RSE_HBMEbeta))
 summary(RSE)
 ```
 
-#case 2 : Auxiliary variables only contains variable with error and without error in aux variable
-##STEP 2 : Fitting Model
+## case 2 : Auxiliary variables only contains variable with error and without error in aux variable
+
+## STEP 1 : Load Data Set
+```{r}
+data("dataHBMEbetaNS")
+```
+
+## STEP 2 : Fitting Model
+
 ```{r}
 example_mix <- meHBbeta(Y~x1+x2+x3, var.x = c("v.x1","v.x2"),
                         iter.update = 3, iter.mcmc = 5000,
                         thin = 3, burn.in = 1000, data = dataHBMEbeta)
 ```
-##STEP 3 : Ekstract Mean Estimation
-###Small Area Mean Estimation
+
+## STEP 3 : Ekstract Mean Estimation
+
+### Small Area Mean Estimation
+
 ```{r}
 example_mix$Est
 ```
-###Coefficient Estimation
+
+### Coefficient Estimation
+
 ```{r}
 example_mix$coefficient
 ```
-###Random Effect Variance Estimation
+
+### Random Effect Variance Estimation
+
 ```{r}
 example_mix$refvar
 ```
-###Extract MSE
+
+### Extract MSE
+
 ```{r}
 MSE_HBMEbetaNS=example_mix$Est$sd^2
 ```
-###Extract RSE
+
+### Extract RSE
+
 ```{r}
 RSE_HBMEbetaNS=sqrt(MSE_HBMEbeta)/example_mix$Est$mean*100
 ```
-#You can compare with Direct Estimation
-##Extract Direct  Estimation
+
+## You can compare with Direct Estimation
+
+### Extract Direct  Estimation
+
 ```{r}
 Y_directNS=dataHBMEbetaNS[,1]
 MSE_directNS=dataHBMEbetaNS[,6]
 RSE_directNS=sqrt(MSE_directNS)/Y_directNS*100
 ```
-##Comparing Y
+
+### Comparing Y
+
 ```{r}
 Y_HBMEbetaNS=example_mix$Est$mean
-Y_NS=as.data.frame(cbind(Y_direct,Y_HBMEbetaNS))
+Y_NS=as.data.frame(cbind(Y_directNS,Y_HBMEbetaNS))
 summary(Y_NS)
 boxplot(Y_NS,col=topo.colors(3))
 ```
-##Comparing Mean Squared  Error (MSE) 
+
+### Comparing Mean Squared  Error (MSE) 
+
 ```{r}
 MSE_NS=as.data.frame(cbind(MSE_direct,MSE_HBMEbetaNS))
 summary(MSE_NS)
 ```
-##Comparing Relative Standard  Error (RSE) 
+
+### Comparing Relative Standard  Error (RSE) 
+
 ```{r}
 RSE_NS=as.data.frame(cbind(RSE_direct,RSE_HBMEbetaNS))
 summary(RSE_NS)
