@@ -33,19 +33,14 @@
 #'
 #' ## Auxiliary variables only contains variable with error in aux variable
 #' example <- meHBbeta(Y~x1+x2, var.x = c("v.x1","v.x2"),
-#'                    iter.update = 3, iter.mcmc = 10000,
-#'                    thin = 3, burn.in = 1000, data = dataHBMEbeta)
-#'
-#' ## Auxiliary variables contains variable with error and without error in aux variable
-#' example_mix <- meHBbeta(Y~x1+x2+x3, var.x = c("v.x1","v.x2"),
-#'                         iter.update = 3, iter.mcmc = 10000,
-#'                         thin = 3, burn.in = 1000, data = dataHBMEbeta)
+#'                    iter.update = 3, iter.mcmc = 1010,
+#'                    thin = 1, burn.in = 1000, data = dataHBMEbeta)
 #'
 #' ## you can use dataHBMEbetaNS for using dataset with non-sampled area
-#'
+#' ## and you can use this function for aux variables contains variable with error and without error
 #'
 meHBbeta <- function(formula, var.x, coef, var.coef,
-                     iter.update=3, iter.mcmc=10000, thin = 3, tau.u = 1, burn.in =2000, data){
+                     iter.update=3, iter.mcmc=10000, thin = 2, tau.u = 1, burn.in =2000, data){
   result <- list(Est = NA, refvar = NA, coefficient = NA,
                  plot=NA)
 
@@ -81,8 +76,11 @@ meHBbeta <- function(formula, var.x, coef, var.coef,
     stop("the number of iteration updates at least 3 times")
   }
 
-
-  tau.ua = tau.ub = phi.aa = phi.ab = phi.ba = phi.bb = 1
+  mu.b = rep(0, p)
+  tau.b = rep(1, p)
+  tau.ua = tau.ub = 1
+  phi.aa = phi.ab = 1
+  phi.ba = phi.bb = 1
   a.var = 1
   c <- data[, var.x]
   c <- as.data.frame(c)
@@ -90,11 +88,6 @@ meHBbeta <- function(formula, var.x, coef, var.coef,
 
   if (!any(is.na(formuladata[,1]))){
     formuladata <- model.frame(formula, na.action = na.omit, data)
-
-    if (any(formuladata[,1]<=0) || any(formuladata[,1]>=1)){
-      stop("response variable must be 0 < " ,formula[2], " < 1")
-    }
-
     X <- model.matrix(formula, data)
     y <- formuladata[,1]
     m <- length(y)
@@ -148,7 +141,6 @@ meHBbeta <- function(formula, var.x, coef, var.coef,
         params <- c("mu","a.var","b", "phi.a","phi.b","tau.u")
         samps1 <- coda.samples( jags.m, params, n.iter=iter.mcmc, thin=thin)
         samps11 <- window(samps1, start=burn.in + 1, end=iter.mcmc)
-
         result_samps=summary(samps11)
         a.var=result_samps$statistics[1]
         beta=result_samps$statistics[2:(p+1),1:2]
@@ -262,16 +254,17 @@ meHBbeta <- function(formula, var.x, coef, var.coef,
     X <- model.matrix(formula, data)
     y <- formuladata[,1]
     m <- length(y)
-    tau.ub = tau.ua = phi.aa=phi.ab = phi.ba=phi.bb = a.var = 1
+    mu.b = rep(0, p)
+    tau.b = rep(1, p)
+    tau.ua = tau.ub = 1
+    phi.aa = phi.ab = 1
+    phi.ba = phi.bb = 1
+    a.var = 1
 
     formuladata$idx <- rep(1:m)
     formuladata <- cbind(formuladata, c)
     data_sampled <- na.omit(formuladata)
     c_sampled <- data_sampled[, var.x]
-
-    if (any(data_sampled[,1]<=0) || any(data_sampled[,1]>=1)){
-      stop("response variable must be 0 < " ,formula[2], " < 1")}
-
     data_nonsampled <- formuladata[-data_sampled$idx,]
     c_nonsampled <- data_nonsampled[, var.x]
     r <- data_nonsampled$idx
@@ -324,7 +317,7 @@ meHBbeta <- function(formula, var.x, coef, var.coef,
 					  for(J in 1:(n_c)){
 					    em.T[j,J] ~ dnorm(Xme_nonsampled[j,J], te.T[j,J])
 					  }
-					  for(I in 1:(n-c)){
+					  for(I in 1:(n_c)){
                 kjk.T[j,I] <- mu.b[I+1]*em.T[j,I]
               }
 					   for(G in 1:(n_c)){
@@ -409,7 +402,7 @@ meHBbeta <- function(formula, var.x, coef, var.coef,
               }
 					   for(G in 1:(p-1)){
 					    te.T[j,G] <-  1/var.x.T[j,G]
-					   }
+					  }
 					}
 					for (l in 1:p){
 					b[l]~dnorm(mu.b[l], tau.b[l])
@@ -425,7 +418,7 @@ meHBbeta <- function(formula, var.x, coef, var.coef,
         file.remove("meBeta.txt")
         params <- c("mu","mu.T","a.var","b", "tau.u", "phi.a","phi.b")
         samps1 <- coda.samples( jags.m, params, n.iter=iter.mcmc, thin=thin)
-        samps11 <- window(samps1, start=burn.in + 1, end=iter.mcmc)
+        samps11 <- window(samps1, start=burn.in+1, end=iter.mcmc)
 
         result_samps=summary(samps11)
         a.var=result_samps$statistics[1]
