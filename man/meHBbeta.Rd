@@ -11,7 +11,7 @@ meHBbeta(
   var.coef,
   iter.update = 3,
   iter.mcmc = 10000,
-  thin = 3,
+  thin = 2,
   tau.u = 1,
   burn.in = 2000,
   data
@@ -55,15 +55,10 @@ data(dataHBMEbeta)
 
 ## Auxiliary variables only contains variable with error in aux variable
 example <- meHBbeta(Y~x1+x2, var.x = c("v.x1","v.x2"),
-                   iter.update = 3, iter.mcmc = 10000,
-                   thin = 3, burn.in = 1000, data = dataHBMEbeta)
-
-## Auxiliary variables contains variable with error and without error in aux variable
-example_mix <- meHBbeta(Y~x1+x2+x3, var.x = c("v.x1","v.x2"),
-                        iter.update = 3, iter.mcmc = 10000,
-                        thin = 3, burn.in = 1000, data = dataHBMEbeta)
+                   iter.update = 3, iter.mcmc = 1010,
+                   thin = 1, burn.in = 1000, data = dataHBMEbeta)
 
 ## you can use dataHBMEbetaNS for using dataset with non-sampled area
-
+## and you can use this function for aux variables contains variable with error and without error
 
 }
