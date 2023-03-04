@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^data-raw$
+^cran-comments\.md$
+^\.travis\.yml$
+^CRAN-SUBMISSION$
