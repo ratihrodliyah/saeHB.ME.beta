@@ -480,5 +480,6 @@ meHBbeta <- function(formula, var.x, coef, var.coef,
                            par(mar=c(2,2,2,2)),
                            autocorr.plot(result_mcmc,col="brown2",lwd=2),
                            plot(result_mcmc,col="brown2",lwd=2))
+  on.exit(result)
   return(result)
 }
