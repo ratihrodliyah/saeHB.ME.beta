@@ -1,6 +1,5 @@
 Package: saeHB.ME.beta
-Title: Small Area Estimation with Measurement Error using Hierarchical
-        Bayesian Method under Beta Distribution
+Title: SAE with Measurement Error using HB under Beta Distribution
 Version: 0.1.0
 Authors@R: 
     c(person("Azka Ubaidillah", role = "aut", email = "azka@stis.ac.id"),
