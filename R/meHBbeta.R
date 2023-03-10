@@ -44,6 +44,8 @@ meHBbeta <- function(formula, var.x, coef, var.coef,
   result <- list(Est = NA, refvar = NA, coefficient = NA,
                  plot=NA)
 
+  opar <- par(no.readonly = TRUE)
+  on.exit(par(opar))
 
   formuladata <- model.frame(formula, na.action = NULL, data)
   n <- nrow(formuladata)
@@ -480,6 +482,5 @@ meHBbeta <- function(formula, var.x, coef, var.coef,
                            par(mar=c(2,2,2,2)),
                            autocorr.plot(result_mcmc,col="brown2",lwd=2),
                            plot(result_mcmc,col="brown2",lwd=2))
-  on.exit(result)
   return(result)
 }
