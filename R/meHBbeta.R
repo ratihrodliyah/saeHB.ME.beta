@@ -86,6 +86,9 @@ meHBbeta <- function(formula, var.x, coef, var.coef,
   a.var = 1
   c <- data[, var.x]
   c <- as.data.frame(c)
+  if(ncol(c) == 1){
+    names(c) = var.x
+  }
   n_c <- dim(c)[2]
 
   if (!any(is.na(formuladata[,1]))){
@@ -266,9 +269,9 @@ meHBbeta <- function(formula, var.x, coef, var.coef,
     formuladata$idx <- rep(1:m)
     formuladata <- cbind(formuladata, c)
     data_sampled <- na.omit(formuladata)
-    c_sampled <- data_sampled[, var.x]
+    c_sampled <- as.data.frame(data_sampled[, var.x])
     data_nonsampled <- formuladata[-data_sampled$idx,]
-    c_nonsampled <- data_nonsampled[, var.x]
+    c_nonsampled <- as.data.frame(data_nonsampled[, var.x])
     r <- data_nonsampled$idx
     m1 <- nrow(data_sampled)
     m2 <- nrow(data_nonsampled)
