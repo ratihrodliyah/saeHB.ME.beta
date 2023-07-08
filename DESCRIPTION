@@ -1,6 +1,6 @@
 Package: saeHB.ME.beta
 Title: SAE with Measurement Error using HB under Beta Distribution
-Version: 0.1.0
+Version: 1.0.1
 Authors@R: 
     c(person("Azka Ubaidillah", role = "aut", email = "azka@stis.ac.id"),
       person("Ratih Rodliyah", role = c("aut","cre"), email = "ratihrodliyah2@gmail.com"))
